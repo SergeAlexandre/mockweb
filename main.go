@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/alexedwards/scs/v2"
 	"github.com/pior/runnable"
 	"mockweb/internal/config"
@@ -10,7 +11,7 @@ import (
 
 func main() {
 	config.Setup()
-
+	fmt.Printf("mockweb version:%s   buildTS:%s\n", config.Version, config.BuildTs)
 	sessionManager := scs.New()
 	sessionManager.Cookie.Name = "mock_session"
 	sessionManager.IdleTimeout = config.Conf.IdleTimeout
