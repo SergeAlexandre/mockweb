@@ -3,6 +3,7 @@ module mockweb
 go 1.20
 
 require (
+	github.com/alexedwards/scs/v2 v2.5.1
 	github.com/bombsimon/logrusr/v4 v4.0.0
 	github.com/go-logr/logr v1.2.4
 	github.com/gorilla/mux v1.8.0

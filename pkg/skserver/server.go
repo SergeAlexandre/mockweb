@@ -38,18 +38,6 @@ type skServer struct {
 }
 
 func (server *skServer) AddHandler(urlPath string, method string, handler http.Handler) {
-	lh, ok := handler.(LoggingHandler)
-	if ok {
-		lh.SetLog(server.Log.WithName(fmt.Sprintf("%s handler", server.Name)))
-		if lh.GetLog().GetSink() == nil {
-			panic(fmt.Sprintf("Handler '%s' does not implements correctly LoggingHandler interface", server.Name))
-		}
-		lh.GetLog().Info(fmt.Sprintf("'%s' service ENABLED", server.Name))
-	} else {
-		// All our handlers should implements LogginHandler interface
-		panic(fmt.Sprintf("Handler '%s' does not implements LoggingHandler interface", server.Name))
-	}
-
 	server.Router.Handle(urlPath, handler).Methods(method)
 }
 
@@ -71,9 +59,9 @@ func New(name string, conf *Config, log logr.Logger) SkServer {
 			server.Config.KeyName = "tls.key"
 		}
 	}
+
 	if server.Router == nil {
 		server.Router = mux.NewRouter()
-		server.Router.Use(LogHttp)
 		server.Router.MethodNotAllowedHandler = &handlers.MethodNotAllowedHandler{
 			Logger: server.Log,
 		}
@@ -81,6 +69,7 @@ func New(name string, conf *Config, log logr.Logger) SkServer {
 			Logger: server.Log,
 		}
 	}
+
 	return server
 }
 

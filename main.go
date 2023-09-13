@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/alexedwards/scs/v2"
 	"github.com/pior/runnable"
 	"mockweb/internal/config"
 	"mockweb/internal/handlers"
@@ -9,11 +10,19 @@ import (
 
 func main() {
 	config.Setup()
+
+	sessionManager := scs.New()
+	sessionManager.Cookie.Name = "mock_session"
+	sessionManager.IdleTimeout = config.Conf.IdleTimeout
+	sessionManager.Lifetime = config.Conf.SessionLifetime
 	server := skserver.New("Main", &config.Conf.Server, config.Log)
 
-	hdl := &handlers.InfoHandler{}
+	hdl := &handlers.InfoHandler{
+		Log:            config.Log,
+		SessionManager: sessionManager,
+	}
 
-	server.AddHandler("/info", "GET", hdl)
+	server.AddHandler("/info", "GET", sessionManager.LoadAndSave(hdl))
 
 	runnableMgr := runnable.NewManager()
 	runnableMgr.Add(server)
