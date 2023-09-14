@@ -47,6 +47,7 @@ func (h *InfoHandler) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 		sessionId = nbrSession
 		h.SessionManager.Put(request.Context(), sessionIdKey, sessionId)
 		sessionHitCount = 1
+		h.Log.V(0).Info("+++++> New session", "remote", request.RemoteAddr)
 	} else {
 		sessionHitCount = h.SessionManager.GetInt(request.Context(), sessionHitCountKey) + 1
 	}

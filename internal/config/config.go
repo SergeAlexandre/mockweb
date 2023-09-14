@@ -26,7 +26,7 @@ func Setup() {
 
 	pflag.StringVar(&Conf.Server.Interface, "interface", "0.0.0.0", "Listening interface")
 	pflag.IntVar(&Conf.Server.Port, "port", 0, "Listening port (Default 80 or 443")
-	pflag.StringVar(&Conf.Server.CertDir, "cerDir", "", "Directory containing server key and cert. Clear text if not defined")
+	pflag.StringVar(&Conf.Server.CertDir, "certDir", "", "Directory containing server key and cert. Clear text if not defined")
 	pflag.StringVar(&Conf.Server.CertName, "certName", "tls.crt", "Server certificate file name")
 	pflag.StringVar(&Conf.Server.KeyName, "keyName", "tls.key", "Server key file name")
 	pflag.StringVar(&Conf.Log.Level, "logLevel", "INFO", "Log level (PANIC|FATAL|ERROR|WARN|INFO|DEBUG|TRACE)")

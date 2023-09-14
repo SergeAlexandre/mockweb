@@ -14,7 +14,7 @@ type NotFoundHandler struct {
 
 func (h *NotFoundHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
 	h.Logger.V(0).Info("WARNING: Url not found", "uri", request.RequestURI)
-	http.Error(writer, "", http.StatusNotFound)
+	http.Error(writer, "404: URL not found", http.StatusNotFound)
 }
 
 type MethodNotAllowedHandler struct {
