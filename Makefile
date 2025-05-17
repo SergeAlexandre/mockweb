@@ -1,6 +1,6 @@
 # Image URL to use all building/pushing image targets
-VERSION ?= v0.1.0
-DOCKER_REPO := ghcr.io/sergealexandre
+VERSION ?= 0.1.0
+DOCKER_REPO := quay.io/sergealexandre
 BUILDX_CACHE=/tmp/docker_cache
 
 BUILD_TS ?= $(shell date -u +%Y%m%d.%H%M%S)

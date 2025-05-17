@@ -33,6 +33,7 @@ type infoTmplData struct {
 	SessionCount int
 	SessionId    int
 	SessionHits  int
+	Cookies      []*http.Cookie
 }
 
 func (h *InfoHandler) ServeHTTP(writer http.ResponseWriter, request *http.Request) {
@@ -53,6 +54,8 @@ func (h *InfoHandler) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 	}
 	h.SessionManager.Put(request.Context(), sessionHitCountKey, sessionHitCount)
 
+	cookies := request.Cookies()
+
 	info := &infoTmplData{
 		Name:         config.Conf.Name,
 		Now:          time.Now().Format("2006-01-02T15:04:05"),
@@ -61,6 +64,7 @@ func (h *InfoHandler) ServeHTTP(writer http.ResponseWriter, request *http.Reques
 		SessionId:    sessionId,
 		SessionHits:  sessionHitCount,
 		Headers:      request.Header,
+		Cookies:      cookies,
 	}
 	if config.Conf.NoCache {
 		writer.Header().Set("Cache-Control", "no-cache, no-store, must-revalidate;")
@@ -95,6 +99,12 @@ var infoTmpl = template.Must(template.New("info.html").Parse(`<html>
 	<h3>Headers:</h3>
 	<table>
 		{{ range $key, $value := .Headers }}
+			<tr><td>{{ $key }}:</td><td>{{ $value }}</td></tr>
+		{{ end }}
+	</table>
+	<h3>Cookies:</h3>
+	<table>
+		{{ range $key, $value := .Cookies }}
 			<tr><td>{{ $key }}:</td><td>{{ $value }}</td></tr>
 		{{ end }}
 	</table>
